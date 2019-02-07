@@ -30,9 +30,10 @@ public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuf
         }
     }
 
-    private void doWrite(String currentTime) {
-        if (currentTime != null && currentTime.trim().length() > 0){
-            byte[] bytes = currentTime.getBytes();
+    private void doWrite(String response) {
+        if (response != null && response.trim().length() > 0){
+            System.out.println("response is: " + response);
+            byte[] bytes = response.getBytes();
             ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);
             writeBuffer.put(bytes);
             writeBuffer.flip();
