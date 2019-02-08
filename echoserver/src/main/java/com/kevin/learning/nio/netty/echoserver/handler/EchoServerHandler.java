@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 public class EchoServerHandler extends ChannelHandlerAdapter {
-    int counter = 0;
+    private int counter = 0;
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
@@ -19,6 +19,6 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
         System.out.println("This is " + ++counter + " times receive client: [" + body + "]");
         body += "$_";
         ByteBuf echo = Unpooled.copiedBuffer(body.getBytes());
-        ctx.write(echo);
+        ctx.writeAndFlush(echo);
     }
 }
