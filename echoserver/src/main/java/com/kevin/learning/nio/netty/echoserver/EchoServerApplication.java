@@ -16,7 +16,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
-public class EchoserverApplication {
+public class EchoServerApplication {
 	public void bind(int port) throws Exception {
 		// config NIO eventLoopGroup for Server
 		NioEventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -58,7 +58,7 @@ public class EchoserverApplication {
 				// use default value
 			}
 		}
-		new EchoserverApplication().bind(port);
+		new EchoServerApplication().bind(port);
 	}
 
 }
