@@ -2,6 +2,7 @@ package com.kevin.learning.netty.httpserver.server;
 
 import com.kevin.learning.netty.httpserver.config.ServerConfig;
 import com.kevin.learning.netty.httpserver.handler.http.MyHttpRequestHandler;
+import com.kevin.learning.netty.httpserver.handler.http.MyHttpRequestHandler2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -47,6 +48,7 @@ public class HttpServer {
                             ch.pipeline().addLast("http-decoder", new HttpResponseDecoder());
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
                             ch.pipeline().addLast("myHttpRequestHandler", new MyHttpRequestHandler());
+                            ch.pipeline().addLast("myHttpRequestHandler2", new MyHttpRequestHandler2());
                         }
                     });
             ChannelFuture channelFuture = b.bind(serverConfig.getHttp().getHost(), serverConfig.getHttp().getPort()).sync();

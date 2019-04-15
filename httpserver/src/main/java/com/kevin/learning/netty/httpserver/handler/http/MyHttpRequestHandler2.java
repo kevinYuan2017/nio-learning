@@ -9,30 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static io.netty.handler.codec.spdy.SpdyHeaders.HttpNames.METHOD;
-
 @Component
-public class MyHttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyHttpRequestHandler.class);
+public class MyHttpRequestHandler2 extends SimpleChannelInboundHandler<FullHttpRequest> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyHttpRequestHandler2.class);
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         if (request.getDecoderResult().isSuccess()) {
-            if (request.getUri().equals("/hello")) {
+            if (request.getUri().equals("/hello2")) {
                 LOGGER.info("RequestURI: {}", request.getUri());
-                HttpResponseUtil.returnJson(ctx, HttpResponseStatus.OK, "Hi");
+                HttpResponseUtil.returnJson(ctx, HttpResponseStatus.OK, "Hi2");
             }else {
-                request.retain();
-                ctx.fireChannelRead(request);
+                HttpResponseUtil.returnJson(ctx, HttpResponseStatus.OK, "Hi0");
             }
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
-        ctx.close();
     }
 }
