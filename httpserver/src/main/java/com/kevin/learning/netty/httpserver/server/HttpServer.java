@@ -1,7 +1,7 @@
 package com.kevin.learning.netty.httpserver.server;
 
 import com.kevin.learning.netty.httpserver.config.ServerConfig;
-import com.kevin.learning.netty.httpserver.handler.MyHttpRequestHandler;
+import com.kevin.learning.netty.httpserver.handler.http.MyHttpRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

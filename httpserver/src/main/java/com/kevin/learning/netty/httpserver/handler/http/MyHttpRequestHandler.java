@@ -1,4 +1,4 @@
-package com.kevin.learning.netty.httpserver.handler;
+package com.kevin.learning.netty.httpserver.handler.http;
 
 import com.kevin.learning.netty.httpserver.Util.HttpResponseUtil;
 import io.netty.channel.ChannelHandlerContext;
