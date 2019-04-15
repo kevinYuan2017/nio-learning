@@ -46,7 +46,7 @@ public class HttpServer {
                             ch.pipeline().addLast("http-aggregate", new HttpObjectAggregator(serverConfig.getHttp().getMaxContentLength()));
                             ch.pipeline().addLast("http-decoder", new HttpResponseDecoder());
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
-                            ch.pipeline().addLast("requstHandler", new MyHttpRequestHandler());
+                            ch.pipeline().addLast("myHttpRequestHandler", new MyHttpRequestHandler());
                         }
                     });
             ChannelFuture channelFuture = b.bind(serverConfig.getHttp().getHost(), serverConfig.getHttp().getPort()).sync();
