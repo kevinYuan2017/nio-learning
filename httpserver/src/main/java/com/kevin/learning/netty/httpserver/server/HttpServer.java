@@ -32,8 +32,8 @@ public class HttpServer {
 
     @PostConstruct
     public void run() throws Exception {
-        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
-        NioEventLoopGroup workGroup = new NioEventLoopGroup();
+        NioEventLoopGroup bossGroup = new NioEventLoopGroup(4);
+        NioEventLoopGroup workGroup = new NioEventLoopGroup(8);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workGroup)

@@ -17,13 +17,14 @@ import static io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE;
 import static io.netty.handler.codec.rtsp.RtspHeaders.Names.CONTENT_LENGTH;
 
 public class HttpResponseUtil {
+    private static final String CONTENT_TYPE_JSON = "application/json; charset=utf-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpResponseUtil.class);
     public static void returnJson(ChannelHandlerContext ctx, HttpResponseStatus status, @NotNull Object data) {
         String jsonString = JSON.toJSONString(data);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(jsonString.getBytes());
 
         DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, byteBuf);
-        response.headers().set(CONTENT_TYPE, "application/json; charset=utf-8");
+        response.headers().set(CONTENT_TYPE, CONTENT_TYPE_JSON);
         response.headers().set(CONNECTION, KEEP_ALIVE);
         response.headers().set(CONTENT_LENGTH, jsonString.length());
 
