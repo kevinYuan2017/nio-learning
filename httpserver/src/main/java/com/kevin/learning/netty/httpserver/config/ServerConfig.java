@@ -20,7 +20,7 @@ public class ServerConfig {
         private String host = "localhost";
         private Integer port = 8080;
 
-        private Long maxContentLength = 65535L;
+        private Integer maxContentLength = 65535;
 
         public String getHost() {
             return host;
@@ -38,11 +38,11 @@ public class ServerConfig {
             this.port = port;
         }
 
-        public Long getMaxContentLength() {
+        public Integer getMaxContentLength() {
             return maxContentLength;
         }
 
-        public void setMaxContentLength(Long maxContentLength) {
+        public void setMaxContentLength(Integer maxContentLength) {
             this.maxContentLength = maxContentLength;
         }
     }

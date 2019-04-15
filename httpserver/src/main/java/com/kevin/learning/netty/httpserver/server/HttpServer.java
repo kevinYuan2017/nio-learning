@@ -43,7 +43,7 @@ public class HttpServer {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast("http-codec", new HttpServerCodec());
-                            ch.pipeline().addLast("http-aggregate", new HttpObjectAggregator(65536));
+                            ch.pipeline().addLast("http-aggregate", new HttpObjectAggregator(serverConfig.getHttp().getMaxContentLength()));
                             ch.pipeline().addLast("http-decoder", new HttpResponseDecoder());
                             ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
                             ch.pipeline().addLast("requstHandler", new MyHttpRequestHandler());
