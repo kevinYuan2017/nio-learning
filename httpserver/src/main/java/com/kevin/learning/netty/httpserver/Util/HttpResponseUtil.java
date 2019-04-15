@@ -1,7 +1,6 @@
 package com.kevin.learning.netty.httpserver.Util;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.istack.internal.NotNull;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +18,7 @@ import static io.netty.handler.codec.rtsp.RtspHeaders.Names.CONTENT_LENGTH;
 public class HttpResponseUtil {
     private static final String CONTENT_TYPE_JSON = "application/json; charset=utf-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpResponseUtil.class);
-    public static void returnJson(ChannelHandlerContext ctx, HttpResponseStatus status, @NotNull Object data) {
+    public static void returnJson(ChannelHandlerContext ctx, HttpResponseStatus status, Object data) {
         String jsonString = JSON.toJSONString(data);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(jsonString.getBytes());
 
