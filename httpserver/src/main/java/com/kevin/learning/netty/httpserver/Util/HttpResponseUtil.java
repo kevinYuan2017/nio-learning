@@ -3,6 +3,7 @@ package com.kevin.learning.netty.httpserver.Util;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -27,7 +28,7 @@ public class HttpResponseUtil {
         response.headers().set(CONNECTION, KEEP_ALIVE);
         response.headers().set(CONTENT_LENGTH, jsonString.length());
 
-        LOGGER.info(response.toString());
-        ctx.writeAndFlush(response);
+//        LOGGER.info(response.toString());
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }

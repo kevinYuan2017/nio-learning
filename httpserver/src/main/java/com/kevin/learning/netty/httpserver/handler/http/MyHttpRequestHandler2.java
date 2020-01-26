@@ -16,7 +16,7 @@ public class MyHttpRequestHandler2 extends SimpleChannelInboundHandler<FullHttpR
     protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         if (request.getDecoderResult().isSuccess()) {
             if (request.getUri().equals("/hello2")) {
-                LOGGER.info("RequestURI: {}", request.getUri());
+//                LOGGER.info("RequestURI: {}", request.getUri());
                 HttpResponseUtil.returnJson(ctx, HttpResponseStatus.OK, "Hi2");
             }else {
                 HttpResponseUtil.returnJson(ctx, HttpResponseStatus.OK, "Hi0");
