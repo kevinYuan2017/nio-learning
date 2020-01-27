@@ -1,5 +1,8 @@
 package com.yzk.demo.nio.httpxml.server;
 
+import com.yzk.demo.nio.httpxml.codec.HttpXmlRequestDecoder;
+import com.yzk.demo.nio.httpxml.codec.HttpXmlResponseEncoder;
+import com.yzk.demo.nio.httpxml.pojo.Order;
 import com.yzk.demo.nio.httpxml.server.handler.HttpXmlBookingServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -9,8 +12,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -33,8 +35,16 @@ public class HttpXmlBookingServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast("http-server-codec", new HttpServerCodec());
+//                            pipeline.addLast("http-server-codec", new HttpServerCodec());
+                            // xml 解析器
+                            pipeline.addLast("http-req-decoder", new HttpRequestDecoder());
                             pipeline.addLast("http-obj-aggregator", new HttpObjectAggregator(8192));
+                            pipeline.addLast("http-xml-req-decoder", new HttpXmlRequestDecoder(Order.class, true));
+
+                            pipeline.addLast("http-resp-encoder", new HttpResponseEncoder());
+                            // xml 编码器
+                            pipeline.addLast("http-xml-resp-encoder", new HttpXmlResponseEncoder());
+
                             pipeline.addLast("http-xml-booking-server-handler", new HttpXmlBookingServerHandler());
                         }
                     });

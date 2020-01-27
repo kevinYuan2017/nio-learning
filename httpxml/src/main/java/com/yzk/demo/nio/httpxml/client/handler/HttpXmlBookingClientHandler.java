@@ -1,29 +1,27 @@
 package com.yzk.demo.nio.httpxml.client.handler;
 
+import com.yzk.demo.nio.httpxml.codec.model.HttpXmlRequest;
+import com.yzk.demo.nio.httpxml.codec.model.HttpXmlResponse;
+import com.yzk.demo.nio.httpxml.pojo.Order;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
-import io.netty.util.CharsetUtil;
 
-public class HttpXmlBookingClientHandler extends SimpleChannelInboundHandler<FullHttpResponse> {
-    private String host;
-
-    public HttpXmlBookingClientHandler(String host) {
-        this.host = host;
-    }
-
+public class HttpXmlBookingClientHandler extends SimpleChannelInboundHandler<HttpXmlResponse> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/hello");
-        request.headers().set(HttpHeaderNames.HOST, host);
-        request.content().writeBytes("hello".getBytes());
-        request.headers().set(HttpHeaderNames.CONTENT_LENGTH, "hello".getBytes().length);
-        request.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.TEXT_PLAIN);
-        ctx.writeAndFlush(request);
+        HttpXmlRequest xmlRequest = new HttpXmlRequest(null, Order.create(123));
+        ctx.writeAndFlush(xmlRequest);
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse msg) throws Exception {
-        System.out.println("client received msg from server: " + msg.content().toString(CharsetUtil.UTF_8));
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, HttpXmlResponse msg) throws Exception {
+        System.out.println("The client receive response of http header is: " + msg.getHttpResponse().headers().names());
+        System.out.println("The client receive response of http body is: " + msg.getResult());
     }
 }

@@ -1,2 +1,3 @@
 # build commamd(exec on the project base dir)
+mvn clean && mvn package
 java -cp ~/Downloads/jibx/lib/jibx-tools.jar org.jibx.binding.generator.BindGen -p target/classes/ com.yzk.demo.nio.httpxml.pojo.Order
