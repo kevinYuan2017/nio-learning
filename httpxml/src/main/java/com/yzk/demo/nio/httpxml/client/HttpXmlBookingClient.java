@@ -36,6 +36,7 @@ public class HttpXmlBookingClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
+//                            pipeline.addLast("http-client-codec", new HttpClientCodec());
                             pipeline.addLast("http-resp-decoder", new HttpResponseDecoder());
                             pipeline.addLast("http-client-obj-aggregator", new HttpObjectAggregator(8192));
                             // xml 解码器
