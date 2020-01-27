@@ -44,4 +44,14 @@ public class Customer {
     public void setMiddleName(List<String> middleName) {
         this.middleName = middleName;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerNumber=" + customerNumber +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName=" + middleName +
+                '}';
+    }
 }
