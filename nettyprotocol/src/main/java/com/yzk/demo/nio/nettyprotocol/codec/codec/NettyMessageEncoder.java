@@ -57,7 +57,9 @@ public class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
         }else
             sendBuf.writeInt(0);
 
-        sendBuf.setInt(4, sendBuf.readableBytes() - 8);
+        // modify数据体长度 = readableBytes - (crc/4字节 + length自身/4字节)的长度
+        // index是4, 是应为crc的长度是4个字节, 所以, length的起始位/index就是4, 由于我本身对这部分不熟悉, 增加这个注释
+        sendBuf.setInt(4, sendBuf.readableBytes() - (4 + 4));
 
         ByteBuf copy = sendBuf.copy();
         byte[] bytes = new byte[copy.readableBytes()];

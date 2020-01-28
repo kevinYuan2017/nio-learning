@@ -13,8 +13,7 @@ public class MarshallingDecoder {
     }
 
     protected Object decode(ByteBuf in) throws Exception {
-        int i = in.readerIndex();
-        int objectSize = in.readableBytes();
+        int objectSize = in.readInt();    // 读取body数据体长度
         ByteBuf buf = in.slice(in.readerIndex(), objectSize);
         ChannelBufferByteInput input = new ChannelBufferByteInput(buf);
         try {

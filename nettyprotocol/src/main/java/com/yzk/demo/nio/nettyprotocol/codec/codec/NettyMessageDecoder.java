@@ -59,7 +59,6 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
         }
 
         if (frame.readableBytes() > 4) {
-            frame.readerIndex(frame.readerIndex() + 4);
             message.setBody(marshallingDecoder.decode(frame));
         }
         message.setHeader(header);
