@@ -3,12 +3,9 @@ package com.yzk.demo.nio.nettyprotocol.codec.handler;
 import com.yzk.demo.nio.nettyprotocol.codec.enums.MessageType;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.Header;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.NettyMessage;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 
-public class HeartBeatRespHandler extends ChannelHandlerAdapter {
+public class HeartBeatRespHandler extends SimpleChannelInboundHandler<NettyMessage> {
     /**
      * Calls {@link ChannelHandlerContext#fireChannelRead(Object)} to forward
      * to the next {@link ChannelHandler} in the {@link ChannelPipeline}.
@@ -16,12 +13,10 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
      * Sub-classes may override this method to change behavior.
      *
      * @param ctx
-     * @param msg
+     * @param message
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        NettyMessage message = (NettyMessage) msg;
-
+    public void channelRead0(ChannelHandlerContext ctx, NettyMessage message) throws Exception {
         // 返回心跳应答消息
         if (message.getHeader() != null
                 && message.getHeader().getType() == MessageType.HEARTBEAT_REQ.value()) {
@@ -30,7 +25,7 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
             System.out.println("Send heart beat response message to client : --> " + message);
             ctx.writeAndFlush(heartbeat);
         }else {
-            ctx.fireChannelRead(msg);
+            ctx.fireChannelRead(message);
         }
     }
 

@@ -3,15 +3,12 @@ package com.yzk.demo.nio.nettyprotocol.codec.handler;
 import com.yzk.demo.nio.nettyprotocol.codec.enums.MessageType;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.Header;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.NettyMessage;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class HeartBeatReqHandler extends ChannelHandlerAdapter {
+public class HeartBeatReqHandler extends SimpleChannelInboundHandler<NettyMessage> {
     private volatile ScheduledFuture<?> heartBeat;
 
     /**
@@ -21,12 +18,10 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
      * Sub-classes may override this method to change behavior.
      *
      * @param ctx
-     * @param msg
+     * @param message
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        NettyMessage message = (NettyMessage) msg;
-
+    public void channelRead0(ChannelHandlerContext ctx, NettyMessage message) throws Exception {
         // 握手成功, 主动发送心跳消息
         if (message.getHeader() != null
                 && message.getHeader().getType() == MessageType.LOGIN_RESP.value()) {
@@ -35,7 +30,7 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
                 && message.getHeader().getType() == MessageType.HEARTBEAT_RESP.value()) {
             System.out.println("Client received server heart beat message : --> " + message);
         }else {
-            ctx.fireChannelRead(msg);
+            ctx.fireChannelRead(message);
         }
     }
 

@@ -3,12 +3,9 @@ package com.yzk.demo.nio.nettyprotocol.codec.handler;
 import com.yzk.demo.nio.nettyprotocol.codec.enums.MessageType;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.Header;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.NettyMessage;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 
-public class LoginAuthReqHandler extends ChannelHandlerAdapter {
+public class LoginAuthReqHandler extends SimpleChannelInboundHandler<NettyMessage> {
     /**
      * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
      * to the next {@link ChannelHandler} in the {@link ChannelPipeline}.
@@ -30,11 +27,10 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
      * Sub-classes may override this method to change behavior.
      *
      * @param ctx
-     * @param msg
+     * @param message
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        NettyMessage message = (NettyMessage) msg;
+    public void channelRead0(ChannelHandlerContext ctx, NettyMessage message) throws Exception {
         if (message.getHeader() != null
                 && message.getHeader().getType() == MessageType.LOGIN_RESP.value()) {
             byte loginResult = (Byte) message.getBody();      // 书中原文中写道的强转为byte类型是不对的
@@ -42,10 +38,10 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
                 ctx.close();
             }else {
                 System.out.println("Login is ok: " + message);
-                ctx.fireChannelRead(msg);
+                ctx.fireChannelRead(message);
             }
         }else {
-            ctx.fireChannelRead(msg);
+            ctx.fireChannelRead(message);
         }
     }
 

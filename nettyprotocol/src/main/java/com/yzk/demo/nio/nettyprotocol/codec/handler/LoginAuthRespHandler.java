@@ -3,16 +3,13 @@ package com.yzk.demo.nio.nettyprotocol.codec.handler;
 import com.yzk.demo.nio.nettyprotocol.codec.enums.MessageType;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.Header;
 import com.yzk.demo.nio.nettyprotocol.codec.frame.NettyMessage;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class LoginAuthRespHandler extends ChannelHandlerAdapter {
+public class LoginAuthRespHandler extends SimpleChannelInboundHandler<NettyMessage> {
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap<String, Boolean>();
     private String[] whiteList = {"127.0.0.1", "192.168.0.104"};
 
@@ -23,12 +20,10 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
      * Sub-classes may override this method to change behavior.
      *
      * @param ctx
-     * @param msg
+     * @param message
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        NettyMessage message = (NettyMessage) msg;
-
+    public void channelRead0(ChannelHandlerContext ctx, NettyMessage message) throws Exception {
         // 如果是握手请求消息, 处理, 其他消息透传
         if (message.getHeader() != null
                 && message.getHeader().getType() == MessageType.LOGIN_REQ.value()) {
@@ -53,7 +48,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
             System.out.println("The login response is : " + loginResp);
             ctx.writeAndFlush(loginResp);
         }else {
-            ctx.fireChannelRead(msg);
+            ctx.fireChannelRead(message);
         }
     }
 
