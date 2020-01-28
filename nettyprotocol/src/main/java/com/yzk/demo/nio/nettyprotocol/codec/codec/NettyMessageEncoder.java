@@ -64,7 +64,8 @@ public class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
         ByteBuf copy = sendBuf.copy();
         byte[] bytes = new byte[copy.readableBytes()];
         copy.readBytes(bytes, 0, copy.readableBytes());
-        LOGGER.info(" byteArray from encoded byteBuf--> " + Arrays.toString(bytes));
+        copy.release();
+        LOGGER.info(" byteArray after encoded NettyMessage object to byteBuf : " + Arrays.toString(bytes));
         out.add(sendBuf);
     }
 }

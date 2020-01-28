@@ -29,7 +29,8 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
         ByteBuf copy = frame.copy();
         byte[] bytes = new byte[copy.readableBytes()];
         copy.readBytes(bytes, 0, copy.readableBytes());
-        System.out.println(Arrays.toString(bytes));
+        copy.release();
+        LOGGER.info("byteArray before decode byteBuf to NettyMessage object : " + Arrays.toString(bytes));
 
         NettyMessage message = new NettyMessage();
         Header header = new Header();
